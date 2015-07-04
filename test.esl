@@ -28,3 +28,5 @@
 (test "many dashes"      (((. t equals) (eslc "hey------there") "heyThere;")))
 (test "many statements"  (((. t equals) (eslc "(a-b) (c-d)") "aB();\ncD();")))
 (test "underscores kept" (((. t equals) (eslc "a_b") "a_b;")))
+(test "lead and trail"   (((. t equals) (eslc "-a-") "A;")))
+(test "kept in numbers"  (((. t equals) (eslc "-42") "-42;")))
