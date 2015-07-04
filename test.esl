@@ -1,0 +1,30 @@
+(= runTest (function (name func)
+ ((require "tape") name
+                   (function (t)
+                             (func t)
+                             ((. t end)))))) ; Automatically end tests
+
+(= eslc
+ (function (code)
+           (= fullCode ; wrap in a call
+              (+ "(macro camelify (require \"./index.js\")) (camelify "
+                 code
+                 ")"))
+           (return ((require "eslisp") fullCode))))
+
+(macro test
+ (function (name body)
+  (return `(runTest ,name (function (t) ,@body)))))
+
+; - - -
+
+(test "var"    (((. t equals) (eslc "what-is-this")   "whatIsThis;")))
+(test "number" (((. t equals) (eslc "34")   "34;")))
+(test "string" (((. t equals) (eslc "\"hi\"")   "'hi';")))
+
+(test "call"     (((. t equals) (eslc "(what-is-this)") "whatIsThis();")))
+(test "nested"   (((. t equals) (eslc "(a (a-b 2))") "a(aB(2));")))
+(test "capitals" (((. t equals) (eslc "inner-HTML") "innerHTML;")))
+(test "many dashes"      (((. t equals) (eslc "hey------there") "heyThere;")))
+(test "many statements"  (((. t equals) (eslc "(a-b) (c-d)") "aB();\ncD();")))
+(test "underscores kept" (((. t equals) (eslc "a_b") "a_b;")))

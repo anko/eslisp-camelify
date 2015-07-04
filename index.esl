@@ -1,0 +1,23 @@
+(= camelify
+   (function (x) (return
+                   ((. x replace)
+                    (regex [-]+\(.\)? g)
+                    (function (_ c) (return ((. (|| c "") toUpperCase))))))))
+
+
+
+(= transform
+   (function
+     (node)
+     (if (instanceof node Array)
+        ( (return ((. node map) (function (y) (return (transform y))))) )
+        ( (if (|| (== (typeof node) "string")
+                  (== (typeof node) "number"))
+            ( (return node) )
+            ( (return (object atom (camelify (. node atom)))) ))))))
+
+(:= (. module exports)
+    (function
+      ()
+      (= args ((. Array prototype slice call) arguments 0))
+      (return ((. this multi apply) null ((. args map) transform)))))
