@@ -31,6 +31,11 @@
 (test "lead and trail"   (((. t equals) (eslc "-a-") "A;")))
 (test "kept in numbers"  (((. t equals) (eslc "-42") "-42;")))
 
+(test "preserves unquote-splicing atom"
+      (((. t equals)
+        (eslc "(macro wrap (function (x) (return `(foo ,@x)))) (wrap (a b))")
+        "foo(a, b);")))
+
 (test "also works on invalid names if transformed later"
       (((. t equals)
         (eslc "(macro x (function () (return `a))) (return (x a-b.c))")

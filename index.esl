@@ -1,5 +1,7 @@
 (= camelify
-   (function (x) (return
+   (function (x)
+             (if (== x "unquote-splicing") ((return x)))
+             (return
                    ((. x replace)
                     (regex [-]+\(.\)? g)
                     (function (_ c) (return ((. (|| c "") toUpperCase))))))))
