@@ -30,3 +30,11 @@
 (test "underscores kept" (((. t equals) (eslc "a_b") "a_b;")))
 (test "lead and trail"   (((. t equals) (eslc "-a-") "A;")))
 (test "kept in numbers"  (((. t equals) (eslc "-42") "-42;")))
+
+(test "also works on invalid names if transformed later"
+      (((. t equals)
+        (eslc "(macro x (function () (return `a))) (return (x a-b.c))")
+        "return a;")))
+
+(test "no-op"     (((. t equals) (eslc "(whatIsThis (whatElse what))")
+                                 "whatIsThis(whatElse(what));")))
