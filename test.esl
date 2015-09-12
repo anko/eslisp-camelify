@@ -30,6 +30,7 @@
 (test "underscores kept" (((. t equals) (eslc "a_b") "a_b;")))
 (test "lead and trail"   (((. t equals) (eslc "-a-") "A;")))
 (test "kept in numbers"  (((. t equals) (eslc "-42") "-42;")))
+(test "kept in plain dashes"  (((. t equals) (eslc "(- (-- a) -1)") "--a - -1;")))
 
 (test "preserves unquote-splicing atom"
       (((. t equals)

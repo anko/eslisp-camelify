@@ -1,6 +1,7 @@
 (= camelify
    (function (x)
              (if (== x "unquote-splicing") ((return x)))
+             (if ((. (regex ^-+$) test) x) ((return x)))
              (return
                    ((. x replace)
                     (regex [-]+\(.\)? g)
