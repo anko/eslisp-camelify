@@ -1,7 +1,7 @@
 (= camelify
    (function (x)
-             (if (== x "unquote-splicing") ((return x)))
-             (if ((. (regex ^-+$) test) x) ((return x)))
+             (if (== x "unquote-splicing") (return x))
+             (if ((. (regex ^-+$) test) x) (return x))
              (return
                    ((. x replace)
                     (regex [-]+\(.\)? g)
@@ -13,11 +13,11 @@
    (function
      (node)
      (if (instanceof node Array)
-        ( (return ((. node map) (function (y) (return (transform y))))) )
-        ( (if (|| (== (typeof node) "string")
-                  (== (typeof node) "number"))
-            ( (return node) )
-            ( (return (object atom (camelify (. node atom)))) ))))))
+        (block (return ((. node map) (function (y) (return (transform y))))) )
+        (block (if (|| (== (typeof node) "string")
+                       (== (typeof node) "number"))
+                 (return node)
+                 (return (object atom (camelify (. node atom)))) )))))
 
 (:= (. module exports)
     (function
