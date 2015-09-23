@@ -7,22 +7,29 @@ Handy if you prefer lisp-like `dash-separated-variables`.
 
 ## Example
 
-    (macro camelify (require "/path/to/eslisp-camelify/index.js"))
-    (camelify (explain-that (the-answer-is 42)))
+    (macro camelify (require "eslisp-camelify"))
+    (camelify
+      (explain-that (the-answer-is 42)))
 
 ↓
 
     explainThat(theAnswerIs(42));
 
-See [the tests][5] for fuller usage.
+It probably makes good sense to use this as a [transform macro][5] to wrap your
+whole program though:
+
+    eslc -t eslisp-camelify < input.esl > output.js
+
+See [the tests][6] for fuller usage.
 
 ## License
 
-[ISC][6].
+[ISC][7].
 
 [1]: https://www.npmjs.com/package/eslisp-camelify
 [2]: https://travis-ci.org/anko/eslisp-camelify
 [3]: https://gitter.im/anko/eslisp
-[4]: https://www.npmjs.com/package/eslisp
-[5]: test.esl
-[6]: http://opensource.org/licenses/ISC
+[4]: https://github.com/anko/eslisp
+[5]: https://github.com/anko/eslisp/blob/master/doc/how-macros-work.markdown#transform-macros
+[6]: test.esl
+[7]: http://opensource.org/licenses/ISC
