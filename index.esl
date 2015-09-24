@@ -1,4 +1,4 @@
-(= camelify
+(var camelify
    (function (x)
              (if (== x "unquote-splicing") (return x))
              (if ((. (regex ^-+$) test) x) (return x))
@@ -9,7 +9,7 @@
 
 
 
-(= transform
+(var transform
    (function
      (node)
      (if (instanceof node Array)
@@ -19,8 +19,8 @@
                  (return node)
                  (return (object atom (camelify (. node atom)))) )))))
 
-(:= (. module exports)
-    (function
-      ()
-      (= args ((. Array prototype slice call) arguments 0))
-      (return ((. this multi apply) null ((. args map) transform)))))
+(= (. module exports)
+   (function
+     ()
+     (var args ((. Array prototype slice call) arguments 0))
+     (return ((. this multi apply) null ((. args map) transform)))))
