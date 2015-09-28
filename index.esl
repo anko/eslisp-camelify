@@ -1,26 +1,26 @@
 (var camelify
-   (function (x)
-             (if (== x "unquote-splicing") (return x))
-             (if ((. (regex ^-+$) test) x) (return x))
-             (return
-                   ((. x replace)
-                    (regex [-]+\(.\)? g)
-                    (function (_ c) (return ((. (|| c "") toUpperCase))))))))
+   (lambda (x)
+           (if (== x "unquote-splicing") (return x))
+           (if ((. (regex ^-+$) test) x) (return x))
+           (return
+                 ((. x replace)
+                  (regex [-]+\(.\)? g)
+                  (lambda (_ c) (return ((. (|| c "") toUpperCase))))))))
 
 
 
 (var transform
-   (function
+   (lambda
      (node)
      (if (instanceof node Array)
-        (block (return ((. node map) (function (y) (return (transform y))))) )
+        (block (return ((. node map) (lambda (y) (return (transform y))))) )
         (block (if (|| (== (typeof node) "string")
                        (== (typeof node) "number"))
                  (return node)
                  (return (object atom (camelify (. node atom)))) )))))
 
 (= (. module exports)
-   (function
+   (lambda
      ()
      (var args ((. Array prototype slice call) arguments 0))
      (return ((. this multi apply) null ((. args map) transform)))))

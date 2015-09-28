@@ -1,20 +1,21 @@
-(var runTest (function (name func)
- ((require "tape") name
-                   (function (t)
-                             (func t)
-                             ((. t end)))))) ; Automatically end tests
+(var runTest
+     (lambda (name func)
+       ((require "tape") name
+                         (lambda (t)
+                           (func t)
+                           ((. t end)))))) ; Automatically end tests
 
 (var eslc
- (function (code)
-           (var fullCode ; wrap in a call
-                (+ "(macro camelify (require \"./index.js\")) (camelify "
-                   code
-                   ")"))
-           (return ((require "eslisp") fullCode))))
+     (lambda (code)
+       (var fullCode ; wrap in a call
+            (+ "(macro camelify (require \"./index.js\")) (camelify "
+               code
+               ")"))
+       (return ((require "eslisp") fullCode))))
 
 (macro test
- (function (name body)
-  (return `(runTest ,name (function (t) ,@body)))))
+       (lambda (name body)
+         (return `(runTest ,name (lambda (t) ,@body)))))
 
 ; - - -
 
@@ -34,12 +35,12 @@
 
 (test "preserves unquote-splicing atom"
       (((. t equals)
-        (eslc "(macro wrap (function (x) (return `(foo ,@x)))) (wrap (a b))")
+        (eslc "(macro wrap (lambda (x) (return `(foo ,@x)))) (wrap (a b))")
         "foo(a, b);")))
 
 (test "also works on invalid names if transformed later"
       (((. t equals)
-        (eslc "(macro x (function () (return `a))) (f (x a-b.c))")
+        (eslc "(macro x (lambda () (return `a))) (f (x a-b.c))")
         "f(a);")))
 
 (test "no-op"     (((. t equals) (eslc "(whatIsThis (whatElse what))")
