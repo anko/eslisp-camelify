@@ -4,6 +4,7 @@
   "description": "eslisp macro that converts dash-separated atoms to camelCase",
   "main": "index.js",
   "keywords": ["eslisp-macro"],
+  "repository": "anko/eslisp-camelify",
   "scripts": {
     "test": "make test",
     "prepublish": "make"
