@@ -1,9 +1,11 @@
 {
   "name": "eslisp-camelify",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "eslisp macro that converts dash-separated atoms to camelCase",
   "main": "index.js",
-  "keywords": ["eslisp-macro"],
+  "keywords": [
+    "eslisp-macro"
+  ],
   "repository": "anko/eslisp-camelify",
   "scripts": {
     "test": "make test",
