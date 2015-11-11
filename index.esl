@@ -1,7 +1,11 @@
+(var looksLikeNumber (lambda (atomText)
+                       (return ((. atomText match) (regex "^-?\\d+(\\.\\d+)?$")))))
+
 (var camelify
    (lambda (x)
            (if (== x "unquote-splicing") (return x))
            (if ((. (regex ^-+$) test) x) (return x))
+           (if (looksLikeNumber x) (return x))
            (return
                  ((. x replace)
                   (regex [-]+\(.\)? g)
@@ -12,12 +16,15 @@
 (var transform
    (lambda
      (node)
-     (if (instanceof node Array)
-        (block (return ((. node map) (lambda (y) (return (transform y))))) )
-        (block (if (|| (== (typeof node) "string")
-                       (== (typeof node) "number"))
-                 (return node)
-                 (return (object atom (camelify (. node atom)))) )))))
+     (if (== (. node type) "list")
+        (block (return
+                 (object "type" "list"
+                         "values" ((. node values map)
+                                   (lambda (y) (return (transform y)))))))
+        (block (if (== (. node type) "atom")
+                 (return (object "type" "atom"
+                                 "value" (camelify (. node value))))
+                 (return node))))))
 
 (= (. module exports)
    (lambda
